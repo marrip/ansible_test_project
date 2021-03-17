@@ -1,0 +1,16 @@
+- name: "Retrieve branch information for {{ outer_item.name }}"
+  uri:
+    url: "{{ github_repo_url }}/{{ outer_item.name }}/branches"
+    method: GET
+    return_content: yes
+  register: branches
+  until: branches.status == 200
+
+- name: "Update repo for {{ outer_item.name }}"
+  git:
+    repo: "{{ outer_item.ssh_url }}"
+    dest: "{{ backup_root }}/{{ outer_item.name }}"
+    clone: yes
+    update: yes
+    version: "{{ item.name }}"
+  loop: "{{ branches.content }}"

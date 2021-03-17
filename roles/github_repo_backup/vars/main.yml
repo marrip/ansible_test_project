@@ -1,0 +1,4 @@
+backup_root: "~/repo_backup"
+github_orgs_url: "https://api.github.com/orgs/{{ github_organisation }}/repos"
+github_organisation: "clinical-genomics-uppsala"
+github_repo_url: "https://api.github.com/repos/{{ github_organisation }}"

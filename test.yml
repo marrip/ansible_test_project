@@ -1,0 +1,6 @@
+---
+# This playbook is to test things
+
+- hosts: backup
+  roles:
+  - role: github_repo_backup

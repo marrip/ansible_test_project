@@ -1,0 +1,22 @@
+---
+# This role will pull all branches of all public repos from clinical-genomics-uppsala
+
+- name: "Create root dir for backups at {{ backup_root }}"
+  file:
+    dest: "{{ backup_root }}"
+    state: directory
+    recurse: yes
+
+- name: "Retrieve repo information for {{ github_organisation }}"
+  uri:
+    url: "{{ github_orgs_url }}"
+    method: GET
+    return_content: yes
+  register: repos
+  until: repos.status == 200
+
+- name: "Clone and pull all branches of available public repos for {{ github_organisation }}"
+  include_tasks: "update_branch.yml"
+  loop: "{{ repos.content }}"
+  loop_control:
+    loop_var: outer_item
